@@ -42,34 +42,67 @@ public class PhonebookDao {
 		utility.JdbcConnection.closeConnection(conn);
 
 	}
+
 	public void updatePhoneBook(PhoneBook p) {
 		Connection conn = utility.JdbcConnection.getConnection();
 		PreparedStatement stmt;
 		try {
 			stmt = conn.prepareStatement("UPDATE phonebook SET P_NAME=? WHERE P_ID=?");
-			stmt.setString(1,p.getP_name());
-			stmt.setInt(2,p.getP_id());
+			stmt.setString(1, p.getP_name());
+			stmt.setInt(2, p.getP_id());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		utility.JdbcConnection.closeConnection(conn);
+
 	}
-	public List<PhoneBook> getAllPhoneBook(){
+
+	public List<PhoneBook> getAllPhoneBook() {
 		Connection conn = utility.JdbcConnection.getConnection();
 		PreparedStatement stmt;
 		try {
-			stmt = conn.prepareStatement("UPDATE phonebook SET P_NAME=? WHERE P_ID=?");
+			stmt = conn.prepareStatement("SELECT * FROM phonebook ");
 			ResultSet result = stmt.executeQuery();
-			List<PhoneBook> listOfPhoneBook=new ArrayList<>();
+			List<PhoneBook> listOfPhoneBook = new ArrayList<>();
 			while (result.next()) {
-				
+				int p_id = result.getInt(1);
+				String p_name = result.getString(2);
+				PhoneBook p = new PhoneBook(p_id, p_name);
+				listOfPhoneBook.add(p);
 			}
-			
+			return listOfPhoneBook;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
+		utility.JdbcConnection.closeConnection(conn);
+
 		return null;
+
+	}
+
+	public PhoneBook getPhoneBookByName(String name) {
+		Connection conn = utility.JdbcConnection.getConnection();
+		PreparedStatement stmt;
+		try {
+			stmt = conn.prepareStatement("SELECT * FROM phonebook WHERE P_NAME=? ");
+			stmt.setString(1, name);
+			ResultSet result = stmt.executeQuery();
+			while (result.next()) {
+				int p_id = result.getInt(1);
+				String p_name = result.getString(2);
+				PhoneBook p = new PhoneBook(p_id, p_name);
+				return p;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		utility.JdbcConnection.closeConnection(conn);
+
+		return null;
+
 	}
 }
