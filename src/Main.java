@@ -27,7 +27,9 @@ public class Main {
 //		User us=ud.getUserBySureName("ahadi");
 //		System.out.println(us.getU_id()+" "+us.getU_name()+" "+us.getU_surname()+" "+us.getTellnumber());
 //		ud.getUserByName("ali").stream().forEach(s ->System.out.println(s.getU_id()+" "+s.getU_name()+" "+s.getU_surname()+" "+s.getTellnumber()));
-pd.insertUserPhoneBook(4,16);
+//pd.insertUserPhoneBook(4,13);
+//		pd.getUsersListinPhineBook(13).stream().forEach(p4->System.out.println(p4.getU_id()+" "+p4.getU_name()+" "+p4.getU_surname()+" "+p4.getTellnumber()));
+ud.getPhoneBookListForUser(4).stream().forEach(u3->System.out.println(u3.getP_id()+" "+u3.getP_name()));
 	}
 	
 	

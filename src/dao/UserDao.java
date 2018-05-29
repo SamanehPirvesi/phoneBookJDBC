@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import phoneBookJDBC.PhoneBook;
 import phoneBookJDBC.User;
 
 public class UserDao {
@@ -77,20 +78,21 @@ public class UserDao {
 		utility.JdbcConnection.closeConnection(conn);
 		return null;
 	}
+
 	public User getUserBySureName(String surname) {
 		Connection conn = utility.JdbcConnection.getConnection();
 		PreparedStatement stmt;
 		try {
 			stmt = conn.prepareStatement("SELECT * FROM user where surname=?");
-			stmt.setString(1,surname);
+			stmt.setString(1, surname);
 			ResultSet result = stmt.executeQuery();
-			while(result.next()) {
-			int u_id = result.getInt(1);
-			String name = result.getString(2);
-			String surName = result.getString(3);
-			int tellNumber = result.getInt(4);
-			User u = new User(u_id, name, surName, tellNumber);
-			return u;
+			while (result.next()) {
+				int u_id = result.getInt(1);
+				String name = result.getString(2);
+				String surName = result.getString(3);
+				int tellNumber = result.getInt(4);
+				User u = new User(u_id, name, surName, tellNumber);
+				return u;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -98,31 +100,51 @@ public class UserDao {
 		utility.JdbcConnection.closeConnection(conn);
 		return null;
 	}
-	public List<User> getUserByName(String name){
+
+	public List<User> getUserByName(String name) {
 		Connection conn = utility.JdbcConnection.getConnection();
 		PreparedStatement stmt;
 		try {
 			stmt = conn.prepareStatement("SELECT * FROM user where name=?");
-			stmt.setString(1,name);
-			List<User> listOfUser=new ArrayList<>();
+			stmt.setString(1, name);
+			List<User> listOfUser = new ArrayList<>();
 			ResultSet result = stmt.executeQuery();
-			while(result.next()) {
-			int u_id = result.getInt(1);
-			String u_name = result.getString(2);
-			String surName = result.getString(3);
-			int tellNumber = result.getInt(4);
-			User u = new User(u_id, u_name, surName, tellNumber);
-			listOfUser.add(u);
-			
+			while (result.next()) {
+				int u_id = result.getInt(1);
+				String u_name = result.getString(2);
+				String surName = result.getString(3);
+				int tellNumber = result.getInt(4);
+				User u = new User(u_id, u_name, surName, tellNumber);
+				listOfUser.add(u);
 			}
 			return listOfUser;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		utility.JdbcConnection.closeConnection(conn);
-		
-		
 		return null;
 	}
 
+	public List<PhoneBook> getPhoneBookListForUser(int u_id) {
+		Connection conn = utility.JdbcConnection.getConnection();
+		PreparedStatement stmt;
+		try {
+			stmt = conn
+					.prepareStatement("SELECT * FROM phonebook p,user_phonebook up WHERE up.u_id=? and up.p_id=p.P_ID");
+			stmt.setInt(1, u_id);
+			ResultSet result = stmt.executeQuery();
+			List<PhoneBook> listOfPhoneBookForUser = new ArrayList<>();
+			while (result.next()) {
+				int p_id = result.getInt(1);
+				String p_name = result.getString(2);
+				PhoneBook phoneBook = new PhoneBook(p_id, p_name);
+				listOfPhoneBookForUser.add(phoneBook);
+			}
+			return listOfPhoneBookForUser;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		utility.JdbcConnection.closeConnection(conn);
+		return null;
+	}
 }

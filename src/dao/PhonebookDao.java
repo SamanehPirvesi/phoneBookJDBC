@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import phoneBookJDBC.PhoneBook;
+import phoneBookJDBC.User;
 
 public class PhonebookDao {
 	public void createPhoneBook(PhoneBook p) {
@@ -115,6 +116,31 @@ public class PhonebookDao {
 			e.printStackTrace();
 		}
 		utility.JdbcConnection.closeConnection(conn);
-		
 	}
+	public List<User> getUsersListinPhineBook(int p_id){
+		Connection conn = utility.JdbcConnection.getConnection();
+		PreparedStatement stmt;
+		try {
+			stmt = conn.prepareStatement("SELECT * FROM user u,user_phonebook up WHERE up.p_id=? and up.u_id=u.ID");
+			stmt.setInt(1, p_id);
+			ResultSet result = stmt.executeQuery();
+			List<User> listOfuserInPhoneBook = new ArrayList<>();
+			while (result.next()) {
+				int u_id = result.getInt(1);
+				String u_name = result.getString(2);
+				String u_surname=result.getString(3);
+				int u_tellnumber=result.getInt(4);
+				User u = new User(u_id,u_name,u_surname,u_tellnumber);
+				listOfuserInPhoneBook.add(u);
+			}
+			return listOfuserInPhoneBook;
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		utility.JdbcConnection.closeConnection(conn);
+		return null;
+	}
+	
 }
