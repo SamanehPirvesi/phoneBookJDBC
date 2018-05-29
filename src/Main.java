@@ -26,8 +26,10 @@ public class Main {
 //		ud.getAlluser().stream().forEach(s ->System.out.println(s.getU_id()+" "+s.getU_name()+" "+s.getU_surname()+" "+s.getTellnumber()));
 //		User us=ud.getUserBySureName("ahadi");
 //		System.out.println(us.getU_id()+" "+us.getU_name()+" "+us.getU_surname()+" "+us.getTellnumber());
-		ud.getUserByName("ali").stream().forEach(s ->System.out.println(s.getU_id()+" "+s.getU_name()+" "+s.getU_surname()+" "+s.getTellnumber()));
+//		ud.getUserByName("ali").stream().forEach(s ->System.out.println(s.getU_id()+" "+s.getU_name()+" "+s.getU_surname()+" "+s.getTellnumber()));
+pd.insertUserPhoneBook(4,16);
 	}
+	
 	
 	
 

@@ -95,14 +95,26 @@ public class PhonebookDao {
 				PhoneBook p = new PhoneBook(p_id, p_name);
 				return p;
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		utility.JdbcConnection.closeConnection(conn);
-
 		return null;
+	}
+	public void insertUserPhoneBook(int u_id , int p_id) {
+		Connection conn = utility.JdbcConnection.getConnection();
+		PreparedStatement stmt;
+		try {
+			stmt = conn.prepareStatement("INSERT INTO user_phonebook(p_id,u_id)VALUES(?,?)");
+			stmt.setInt(1, p_id);
+			stmt.setInt(2, u_id);
+			stmt.executeUpdate();
 
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		utility.JdbcConnection.closeConnection(conn);
+		
 	}
 }
